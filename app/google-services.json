@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "882378553780",
+    "project_id": "squareroute-314af",
+    "storage_bucket": "squareroute-314af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882378553780:android:b3fab78e68a774abb1dae1",
+        "android_client_info": {
+          "package_name": "com.example.squareroute"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882378553780-pihu8qi2596md8hu4q1mu3osrjcpp74q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrScQmTqa416FwgQXEPgtCOtnebNA5Hns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882378553780-pihu8qi2596md8hu4q1mu3osrjcpp74q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
