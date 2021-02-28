@@ -12,8 +12,8 @@
         android:id="@+id/forgotpassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#FFFFFF"
         android:clickable="false"
         android:fontFamily="sans-serif-medium"
@@ -29,8 +29,8 @@
         android:id="@+id/inscription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
         android:fontFamily="sans-serif-medium"
@@ -40,41 +40,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="ContentDescription" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="367dp"
-        android:layout_height="171dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.363"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:srcCompat="@drawable/login2"
-        tools:ignore="ContentDescription" />
-
     <EditText
         android:id="@+id/editTextTextEmailAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="440dp"
+        android:layout_marginTop="444dp"
         android:autofillHints=""
-        android:textColor="@color/white"
         android:backgroundTint="#000000"
         android:drawableTint="#FFFFFF"
         android:ems="10"
         android:foregroundTint="#FFFFFF"
         android:inputType="textEmailAddress"
         android:labelFor="@id/editTextTextEmailAddress"
+        android:textColor="@color/white"
         android:textColorLink="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.425"
+        app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="367dp"
+        android:layout_height="171dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:srcCompat="@drawable/login2"
+        tools:ignore="ContentDescription" />
+
     <EditText
         android:id="@+id/editTextTextPassword"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="532dp"
@@ -84,8 +82,9 @@
         android:ems="10"
         android:inputType="textPassword"
         android:labelFor="@id/editTextTextPassword"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.425"
+        app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -94,16 +93,30 @@
         android:id="@+id/connexion"
         android:layout_width="140dp"
         android:layout_height="60dp"
-        android:layout_marginTop="644dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="80dp"
         android:backgroundTint="#020202"
         android:text="@string/se_connecter"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toTopOf="@+id/imageView5"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.555" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/connexion"
+        app:layout_constraintVertical_bias="0.214"
+        app:srcCompat="@drawable/login3"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -111,12 +124,9 @@
         android:layout_height="340dp"
         android:layout_marginStart="-120dp"
         android:layout_marginTop="-50dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19"
         app:srcCompat="@drawable/inscrip4"
         tools:ignore="ContentDescription" />
 
@@ -124,31 +134,12 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="132dp"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.137"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4"
         app:srcCompat="@drawable/login1"
-        tools:ignore="ContentDescription"/>
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="110dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="105dp"
-        android:layout_marginBottom="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/forgotpassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connexion"
-        app:srcCompat="@drawable/login3"
         tools:ignore="ContentDescription" />
 
 
