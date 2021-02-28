@@ -12,6 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class Register extends AppCompatActivity {
     EditText inscriptionEmail,inscriptionPrenom,inscriptionPassword;
     TextView inscriptionConnexion;
@@ -61,7 +66,7 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                fAuth.createUserWithEmailAndPassword().addOnSuccessListener(new OnSuccessListener<AuthResult>(){
+                firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>(){
                     @Override
                     public void onSuccess(AuthResult authResult ) {
                         startActivity(new Intent(getApplicationContext(),dashboard.class));

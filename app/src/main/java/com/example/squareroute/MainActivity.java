@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //Ne pas oublier ça sinon t'es con
+        //Ne pas oublier ça sinon c'est caca
         setTheme(R.style.Theme_SquareRoute);
         setContentView(R.layout.activity_main);
 
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         connexionForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Register.class)); // A changer
+                startActivity(new Intent(getApplicationContext(),dashboard.class)); // A changer
             }
         });
 
