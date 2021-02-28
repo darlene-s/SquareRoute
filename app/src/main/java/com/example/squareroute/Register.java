@@ -1,13 +1,16 @@
 package com.example.squareroute;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.hardware.biometrics.BiometricPrompt;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Register extends AppCompatActivity {
     EditText inscriptionEmail,inscriptionPrenom,inscriptionPassword;
@@ -48,18 +51,29 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                if (prenom.isEmpty()) {
-                    inscriptionPrenom.setError("Prénom manquant");
-                    return;
-                }
+                //if (prenom.isEmpty()) {
+                    //inscriptionPrenom.setError("Prénom manquant");
+                    //return;
+                //}
 
                 if (password.isEmpty()) {
                     inscriptionPassword.setError("Mot de passe manquant");
                     return;
                 }
 
-                fAuth.createUserWithEmailAndPassword()
+                fAuth.createUserWithEmailAndPassword().addOnSuccessListener(new OnSuccessListener<AuthResult>(){
+                    @Override
+                    public void onSuccess(AuthResult authResult ) {
+                        startActivity(new Intent(getApplicationContext(),dashboard.class));
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener(){
+                    @Override
+                    public void onFailure(@NonNull Exception e){
+                       Toast.makeText(Register.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-        };
+        });
     }
 }
