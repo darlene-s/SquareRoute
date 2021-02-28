@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+
 
 public class dashboard extends AppCompatActivity {
-    Button logout;
-    FirebaseAuth  mauth;
+    Button logout, checkEmail;
+    FirebaseAuth mauth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +26,30 @@ public class dashboard extends AppCompatActivity {
 
         mauth = FirebaseAuth.getInstance();
         logout = findViewById(R.id.logout);
+        checkEmail = findViewById(R.id.email_check);
+
+        if(!mauth.getCurrentUser().isEmailVerified()){
+            checkEmail.setVisibility(View.VISIBLE);
+        }
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               mauth.signOut();
               signOutUser();
+            }
+        });
+
+        checkEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mauth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>(){
+                    @Override
+                    public void onSuccess(Void aVoid){
+                        Toast.makeText(dashboard.this,"Email de vérification envoyé", Toast.LENGTH_SHORT).show();
+                        checkEmail.setVisibility(View.GONE);
+                    }
+                });
             }
         });
 

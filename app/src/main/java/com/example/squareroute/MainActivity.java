@@ -71,16 +71,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         Toast.makeText(MainActivity.this, "Connexion réussie ! (enfin jcrois)", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), Register.class));
+                        startActivity(new Intent(getApplicationContext(), dashboard.class));
                         //jle renvoie sur la page Register mais normalement sa renvoit vers la page d'accueil c'est juste qu'elle existe pas encore du coup
                         finish();
                     }
                 });
             }
         });
+    }
 
-
-
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(), dashboard.class));
+        }
     }
 }

@@ -56,6 +56,11 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    inscriptionEmail.setError("Email invalide");
+                    return;
+                }
+
                 //if (prenom.isEmpty()) {
                     //inscriptionPrenom.setError("Prénom manquant");
                     //return;
