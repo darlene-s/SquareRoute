@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        //Ne pas oublier ça sinon t'es con
         setTheme(R.style.Theme_SquareRoute);
         setContentView(R.layout.activity_main);
 
@@ -57,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
                 String password = connexionPassword.getText().toString();
 
                 if(email.isEmpty()){
-                    connexionEmail.setError("Wola frère jpeux pas me co si tu mets pas ton email");
+                    connexionEmail.setError("Email manquant");
                     return;
                 }
 
                 if(password.isEmpty()){
-                    connexionPassword.setError("Perso jconnais pas bcp de comptes sans mdp mdrrr sale merde");
+                    connexionPassword.setError("Mot de passe manquant");
                     return;
                 }
 
