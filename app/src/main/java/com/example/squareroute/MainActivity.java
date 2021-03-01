@@ -1,5 +1,6 @@
 package com.example.squareroute;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,12 +14,24 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseUser user;
     EditText connexionEmail,connexionPassword;
     TextView connexionInscription,connexionForgotPassword;
     Button connexionButton;
     FirebaseAuth firebaseAuth;
+    private DatabaseReference reference;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +82,27 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        Toast.makeText(MainActivity.this, "Connexion réussie ! (enfin jcrois)", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), dashboard.class));
-                        //jle renvoie sur la page Register mais normalement sa renvoit vers la page d'accueil c'est juste qu'elle existe pas encore du coup
-                        finish();
+                        user = FirebaseAuth.getInstance().getCurrentUser();
+                        reference = FirebaseDatabase.getInstance().getReference("Utilisateur");
+                        userID = user.getUid();
+
+                        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener(){
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot){
+                                User user = snapshot.getValue(User.class);
+                                if(user != null){
+                                    String prenom = user.prenom;
+                                    Toast.makeText(MainActivity.this, "Connexion réussie ! Bienvenue " + prenom + " !" , Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(getApplicationContext(), dashboard.class));
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error){
+                                Toast.makeText(MainActivity.this, "Une erreur s'est produite ! Veuillez réessayer", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
             }
