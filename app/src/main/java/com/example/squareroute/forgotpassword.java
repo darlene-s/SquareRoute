@@ -3,6 +3,7 @@ package com.example.squareroute;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -58,6 +59,8 @@ public class forgotpassword extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                if (task.isSuccessful()) {
                    Toast.makeText(forgotpassword.this,"Un email de récupération vous a été envoyé",Toast.LENGTH_LONG).show();
+                   progressBar.setVisibility(View.GONE);
+                   startActivity(new Intent(getApplicationContext(),MainActivity.class));
                }else {
                    Toast.makeText(forgotpassword.this, "Veuillez réessayer à nouveau, votre mail est probablement invalide", Toast.LENGTH_LONG).show();
 
