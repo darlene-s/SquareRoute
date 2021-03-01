@@ -2,6 +2,7 @@ package com.example.squareroute;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,9 +15,10 @@ import com.google.firebase.auth.AuthResult;
 
 
 public class dashboard extends AppCompatActivity {
-    Button logout, checkEmail;
+    Button logout, checkEmail, activity6;
     FirebaseAuth mauth;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,7 @@ public class dashboard extends AppCompatActivity {
         mauth = FirebaseAuth.getInstance();
         logout = findViewById(R.id.logout);
         checkEmail = findViewById(R.id.email_check);
+        activity6 = findViewById(R.id.btn_squarerealtime);
 
         if(!mauth.getCurrentUser().isEmailVerified()){
             checkEmail.setVisibility(View.VISIBLE);
@@ -52,9 +55,13 @@ public class dashboard extends AppCompatActivity {
                 });
             }
         });
-
+        activity6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),squareinrealtime.class));
+            }
+        });
     }
-
     private void signOutUser() {
         Intent mainActivity = new Intent(dashboard.this,MainActivity.class);
         mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
