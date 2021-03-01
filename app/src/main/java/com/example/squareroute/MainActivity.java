@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         connexionForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),dashboard.class)); // A changer
+               startActivity(new Intent(getApplicationContext(),forgotpassword.class));
             }
         });
 

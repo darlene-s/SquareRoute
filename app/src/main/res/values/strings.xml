@@ -6,4 +6,5 @@
     <string name="s_inscrire">S\'inscrire</string>
     <string name="connexion">Connexion</string>
     <string name="btn_deconnexion">Déconnexion</string>
+    <string name="soumettre">Soumettre</string>
 </resources>
