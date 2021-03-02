@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class squareinrealtime extends AppCompatActivity {
 
-    ImageButton metro,rer;
+    ImageButton metro,rer,bus,tram;
     public static final String EXTRA_MESSAGE = "transport";
 
 
@@ -21,6 +21,8 @@ public class squareinrealtime extends AppCompatActivity {
 
         metro = findViewById(R.id.btn_metro);
         rer = findViewById(R.id.btn_rer);
+        bus = findViewById(R.id.btn_bus);
+        tram = findViewById(R.id.btn_tram);
 
         metro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +37,22 @@ public class squareinrealtime extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent =  new Intent(getApplicationContext(),LinesActivity.class);
                 intent.putExtra(EXTRA_MESSAGE,new String("rers"));
+                startActivity(intent);
+            }
+        });
+        bus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(getApplicationContext(),LinesActivity.class);
+                intent.putExtra(EXTRA_MESSAGE,new String("buses"));
+                startActivity(intent);
+            }
+        });
+        tram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(getApplicationContext(),LinesActivity.class);
+                intent.putExtra(EXTRA_MESSAGE,new String("tramways"));
                 startActivity(intent);
             }
         });

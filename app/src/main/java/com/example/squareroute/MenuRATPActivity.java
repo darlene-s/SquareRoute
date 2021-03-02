@@ -25,7 +25,8 @@ public class MenuRATPActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuRATPActivity.this,LinesActivity.class);
-                intent.putExtra(EXTRA_MESSAGE,new String("metros"));
+                //intent.putExtra(EXTRA_MESSAGE,new String("metros"));
+                intent.putExtra(EXTRA_MESSAGE,new String("buses"));
                 startActivity(intent);
 
             }
@@ -37,7 +38,6 @@ public class MenuRATPActivity extends AppCompatActivity {
                 Intent intent = new Intent(MenuRATPActivity.this,LinesActivity.class);
                 intent.putExtra(EXTRA_MESSAGE,new String("rers"));
                 startActivity(intent);
-
             }
         });
 
