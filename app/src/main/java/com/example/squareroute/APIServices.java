@@ -20,29 +20,24 @@ public class APIServices {
     public List<String> getLinesFromTransport(final String transport){
 
         OkHttpClient okHttpClient = new OkHttpClient();
-        final List<String> list = new ArrayList<>();
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
 
+        final List<String> list = new ArrayList<String>();
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        List<String> newList = new ArrayList<String>();
         Callback callback = new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                System.out.println("REPONSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " );
                 countDownLatch.countDown();
-
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()) {
-                    System.out.println("REPONSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!: Success" + transport);
                     String myResponse = response.body().string();
-                    System.out.println("REPONSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!: Success" + myResponse);
-
 
                     if (transport.equals("metros")) {
 
                         try {
-                            System.out.println("REPONSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " + myResponse);
                             JSONObject object = new JSONObject(myResponse);
                             JSONObject result = object.getJSONObject("result");
                             JSONArray array = result.getJSONArray("metros");
@@ -57,22 +52,18 @@ public class APIServices {
                             e.printStackTrace();
                             countDownLatch.countDown();
                         }
-                        countDownLatch.countDown();
-                    } else if (transport.equals("rers")) {
 
+
+                    } else if (transport.equals("rers")) {
                         try {
-                            System.out.println("REPONSE !!!!!!!!!!!!!!!!!!!!! : " );
 
                             JSONObject object = new JSONObject(myResponse.toString());
-                            System.out.println("OBJECT !!!!!!!!!!!!!!!!!!!!! : " + object.toString());
                             JSONObject result = object.getJSONObject("result");
-                            System.out.println("RESULT !!!!!!!!!!!!!!!!!!!!! : " + result.toString());
                             JSONArray array = result.getJSONArray("rers");
-                            System.out.println("RESULT !!!!!!!!!!!!!!!!!!!!! : " + array.toString());
+
                             for(int i=0;i<array.length();i++){
                                 JSONObject row = array.getJSONObject(i);
                                 String codeLigne = row.getString("code");
-                                System.out.println("CODE !! : " +codeLigne);
                                 if(codeLigne.equals("A") | codeLigne.equals("B") | codeLigne.equals("E")){
                                     list.add(codeLigne);
                                 }
@@ -84,13 +75,50 @@ public class APIServices {
                             e.printStackTrace();
                             countDownLatch.countDown();
                         }
-                        countDownLatch.countDown();
 
+
+
+                    } else if (transport.equals("buses")){
+                        try {
+                            JSONObject object = new JSONObject(myResponse);
+                            JSONObject result = object.getJSONObject("result");
+                            JSONArray array = result.getJSONArray("buses");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject row = array.getJSONObject(i);
+                                String numeroLigne = row.getString("code");
+                                list.add(numeroLigne);
+                            }
+                            countDownLatch.countDown();
+                        } catch (JSONException e) {
+                            countDownLatch.countDown();
+                            e.printStackTrace();
+                            countDownLatch.countDown();
+                        }
+
+
+                    } else if (transport.equals("tramways")){
+                        try {
+                            JSONObject object = new JSONObject(myResponse);
+                            JSONObject result = object.getJSONObject("result");
+                            JSONArray array = result.getJSONArray("tramways");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject row = array.getJSONObject(i);
+                                String numeroLigne = row.getString("code");
+                                list.add(numeroLigne);
+
+                            }
+                            countDownLatch.countDown();
+
+                        } catch (JSONException e) {
+                            countDownLatch.countDown();
+                            e.printStackTrace();
+                            countDownLatch.countDown();
+
+                        }
 
                     }
                 }else{
-                    System.out.println("REPONSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!: ");
-                    countDownLatch.countDown();
+
                 }
 
             }
@@ -100,12 +128,14 @@ public class APIServices {
         Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(callback);
 
+
         try {
             countDownLatch.await();
-            return list;
+            newList = removeDuplicates((ArrayList<String>) list);
+            return newList;
         } catch (InterruptedException e) {
             e.printStackTrace();
-            return list;
+            return newList;
         }
 
 
@@ -116,11 +146,11 @@ public class APIServices {
         OkHttpClient okHttpClient = new OkHttpClient();
         final List<String> list = new ArrayList<>();
         final CountDownLatch countDownLatch = new CountDownLatch(1);
+        List<String> newList = new ArrayList<String>();
 
         Callback callback = new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                System.out.println("REPONSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " );
                 countDownLatch.countDown();
 
             }
@@ -160,11 +190,13 @@ public class APIServices {
 
         try {
             countDownLatch.await();
-            return list;
+            newList = removeDuplicates((ArrayList<String>) list);
+            return newList;
         } catch (InterruptedException e) {
 
             e.printStackTrace();
-            return list;
+            newList = removeDuplicates((ArrayList<String>) list);
+            return newList;
         }
 
     }
@@ -177,9 +209,7 @@ public class APIServices {
         Callback callback = new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                System.out.println("REPONSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " );
                 countDownLatch.countDown();
-
             }
 
             @Override
@@ -213,7 +243,6 @@ public class APIServices {
         String url ="https://api-ratp.pierre-grimaud.fr/v4/schedules" + "/" + transport + "/" + line +"/" + station +"/A%2BR" +"?_format=json";
         Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(callback);
-        okHttpClient.newCall(request).enqueue(callback);
 
         try {
             countDownLatch.await();
@@ -222,6 +251,21 @@ public class APIServices {
             e.printStackTrace();
             return schedule[0];
         }
+    }
 
+    public ArrayList<String> removeDuplicates(ArrayList<String> list)
+    {
+        ArrayList<String> newList = new ArrayList<String>();
+
+
+        for (String element : list) {
+
+
+            if (!newList.contains(element)) {
+
+                newList.add(element);
+            }
+        }
+        return newList;
     }
 }

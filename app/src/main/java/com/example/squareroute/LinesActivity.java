@@ -27,7 +27,6 @@ public class LinesActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.lignes);
         Intent intent = getIntent();
         final String transport =  intent.getStringExtra(MenuRATPActivity.EXTRA_MESSAGE);
-        System.out.println("TOZ" );
         RequestAPI(transport);
         adapter = new ArrayAdapter<String>(LinesActivity.this,android.R.layout.simple_list_item_1,listLines);
         listView.setAdapter(adapter);
@@ -35,12 +34,10 @@ public class LinesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String ligne = (String) listView.getItemAtPosition(position);
-                System.out.println("LIGNE !!" + ligne);
                 Intent intent2 = new Intent(LinesActivity.this,StationsActivity.class);
                 intent2.putExtra(EXTRA_MESSAGE_LINE,ligne);
                 intent2.putExtra(EXTRA_MESSAGE_TRANSPORT,transport);
                 startActivity(intent2);
-
             }
         });
 
