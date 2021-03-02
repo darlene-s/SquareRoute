@@ -23,8 +23,8 @@ public class StationsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stations);
         setTheme(R.style.Theme_SquareRoute);
+        setContentView(R.layout.activity_stations);
         listView = (ListView) findViewById(R.id.stations);
 
         Intent intent = getIntent();
