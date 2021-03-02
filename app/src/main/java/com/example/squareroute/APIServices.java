@@ -96,7 +96,7 @@ public class APIServices {
             }
         };
 
-        String url ="https://api-ratp.pierre-grimaud.fr/v3/lines/"+transport + "?_format=json";
+        String url ="https://api-ratp.pierre-grimaud.fr/v4/lines/"+transport + "?_format=json";
         Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(callback);
 
@@ -154,7 +154,7 @@ public class APIServices {
         };
 
 
-        String url ="https://api-ratp.pierre-grimaud.fr/v3/stations/"+transport + "/"+ line+ "?_format=json";
+        String url ="https://api-ratp.pierre-grimaud.fr/v4/stations/"+transport + "/"+ line+ "?_format=json";
         Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(callback);
 
@@ -192,7 +192,7 @@ public class APIServices {
                         JSONObject result = object.getJSONObject("result");
                         JSONArray array = result.getJSONArray("schedules");
                         for(int i=0;i<array.length();i++){
-                            schedule[0] += "Attente : " + array.getJSONObject(i).getString("message") + "Destination : " + array.getJSONObject(i).getString("destination")+"\n";
+                            schedule[0] += "Attente : " + array.getJSONObject(i).getString("message") + "\n" + "Destination : " + array.getJSONObject(i).getString("destination")+"\n"+"\n";
                         }
                         countDownLatch.countDown();
                     } catch (JSONException e) {
@@ -210,12 +210,9 @@ public class APIServices {
         };
 
 
-        String url ="https://api-ratp.pierre-grimaud.fr/v3/schedules" + "/" + transport + "/" + line +"/" + station +"/R" +"?_format=json";
-        String url2 ="https://api-ratp.pierre-grimaud.fr/v3/schedules" + "/" + transport + "/" + line +"/" + station +"/A" +"?_format=json";
+        String url ="https://api-ratp.pierre-grimaud.fr/v4/schedules" + "/" + transport + "/" + line +"/" + station +"/A%2BR" +"?_format=json";
         Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(callback);
-
-        Request request2 = new Request.Builder().url(url2).build();
         okHttpClient.newCall(request).enqueue(callback);
 
         try {
