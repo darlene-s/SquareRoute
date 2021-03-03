@@ -17,7 +17,7 @@ import com.google.firebase.auth.AuthResult;
 
 public class dashboard extends AppCompatActivity {
     Button logout, checkEmail;
-    ImageButton activity6;
+    ImageButton activity6,activity2;
     FirebaseAuth mauth;
 
     @SuppressLint("WrongViewCast")
@@ -32,6 +32,7 @@ public class dashboard extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         checkEmail = findViewById(R.id.email_check);
         activity6 = findViewById(R.id.btn_squarerealtime);
+        activity2 = findViewById(R.id.btn_school);
 
         if(!mauth.getCurrentUser().isEmailVerified()){
             checkEmail.setVisibility(View.VISIBLE);
@@ -61,6 +62,12 @@ public class dashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),squareinrealtime.class));
+            }
+        });
+        activity2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),MapActivity.class));
             }
         });
     }

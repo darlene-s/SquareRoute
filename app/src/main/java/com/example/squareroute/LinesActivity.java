@@ -26,7 +26,7 @@ public class LinesActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.lignes);
         Intent intent = getIntent();
-        final String transport =  intent.getStringExtra(MenuRATPActivity.EXTRA_MESSAGE);
+        final String transport =  intent.getStringExtra(squareinrealtime.EXTRA_MESSAGE);
         RequestAPI(transport);
         adapter = new ArrayAdapter<String>(LinesActivity.this,android.R.layout.simple_list_item_1,listLines);
         listView.setAdapter(adapter);
