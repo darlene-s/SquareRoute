@@ -242,6 +242,7 @@ public class APIServices {
 
         String url ="https://api-ratp.pierre-grimaud.fr/v4/schedules" + "/" + transport + "/" + line +"/" + station +"/A%2BR" +"?_format=json";
         Request request = new Request.Builder().url(url).build();
+        countDownLatch.countDown();
         okHttpClient.newCall(request).enqueue(callback);
 
         try {
