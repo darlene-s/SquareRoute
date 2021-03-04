@@ -56,6 +56,7 @@ public class squareinrealtime extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
 }

@@ -31,7 +31,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView14"
-        app:layout_constraintVertical_bias="0.558"
+        app:layout_constraintVertical_bias="0.77"
         app:srcCompat="@drawable/squarerealtime5"
         tools:ignore="ContentDescription" />
 
@@ -99,7 +99,5 @@
         app:layout_constraintTop_toTopOf="@+id/imageView15"
         app:srcCompat="@drawable/squarerealtime7"
         tools:ignore="ContentDescription" />
-
-    =
 
 </androidx.constraintlayout.widget.ConstraintLayout>

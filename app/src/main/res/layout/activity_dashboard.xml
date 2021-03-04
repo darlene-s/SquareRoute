@@ -9,14 +9,13 @@
 
     <ImageView
         android:id="@+id/imageView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="491dp"
+        android:layout_height="801dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView11"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/dashboardmap"
         tools:ignore="ContentDescription" />
 
@@ -50,7 +49,7 @@
         android:layout_width="192dp"
         android:layout_height="58dp"
         android:layout_marginTop="68dp"
-        android:text="Vérifier l'e-mail"
+        android:text="@string/verif_email"
         android:textAllCaps="false"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,34 +75,36 @@
         android:id="@+id/btn_house"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:background="#00FFFFFF"
         android:src="@drawable/btn_house"
-        app:layout_constraintBottom_toTopOf="@+id/btn_new_school_library"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView11"
-        app:layout_constraintVertical_bias="0.4"
-        tools:ignore="ContentDescription"/>
+        app:layout_constraintVertical_bias="0.206"
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/btn_school"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="#00FFFFFF"
         android:src="@drawable/btn_school"
         app:layout_constraintBottom_toTopOf="@+id/btn_favorites"
         app:layout_constraintEnd_toStartOf="@+id/btn_newitinerary"
-        app:layout_constraintHorizontal_bias="0.557"
+        app:layout_constraintHorizontal_bias="0.603"
         app:layout_constraintStart_toEndOf="@+id/btn_house"
         app:layout_constraintTop_toTopOf="@+id/imageView11"
-        app:layout_constraintVertical_bias="0.42"
-        tools:ignore="ContentDescription"/>
+        app:layout_constraintVertical_bias="0.44"
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/btn_newitinerary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="8dp"
         android:background="#00FFFFFF"
         android:src="@drawable/btn_newitinerary"
@@ -112,41 +113,29 @@
         tools:ignore="ContentDescription" />
 
     <ImageButton
-        android:id="@+id/btn_new_school_library"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="156dp"
-        android:background="#00FFFFFF"
-        android:src="@drawable/btn_school_library"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView11"
-        app:layout_constraintEnd_toStartOf="@+id/btn_favorites"
-        app:layout_constraintHorizontal_bias="0.313"
-        app:layout_constraintStart_toStartOf="@+id/imageView11"
-        tools:ignore="ContentDescription" />
-
-    <ImageButton
         android:id="@+id/btn_favorites"
         android:layout_width="102dp"
         android:layout_height="82dp"
-        android:layout_marginTop="152dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="40dp"
         android:background="#00FFFFFF"
         android:src="@drawable/btn_favorites"
         app:layout_constraintEnd_toStartOf="@+id/btn_squarerealtime"
-        app:layout_constraintTop_toTopOf="@+id/imageView11"
+        app:layout_constraintHorizontal_bias="0.701"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_house"
         tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/btn_squarerealtime"
         android:layout_width="109dp"
         android:layout_height="77dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="76dp"
         android:background="#00FFFFFF"
         android:src="@drawable/btn_squarerealtime"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView11"
         app:layout_constraintTop_toTopOf="@+id/imageView11"
-        app:layout_constraintVertical_bias="0.49"
+        app:layout_constraintVertical_bias="0.48000002"
         tools:ignore="ContentDescription" />
 
     <Button
