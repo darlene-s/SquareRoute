@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.Theme_SquareRoute);
         setContentView(R.layout.activity_main);
 
-        Toast.makeText(MainActivity.this, "TOZ", Toast.LENGTH_SHORT).show();
 
         firebaseAuth = FirebaseAuth.getInstance();
 
