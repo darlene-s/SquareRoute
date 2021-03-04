@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -13,6 +14,14 @@ import com.mapbox.mapboxsdk.maps.Style;
 
 public class MapActivity extends AppCompatActivity {
     private MapView mapView;
+    private MapboxMap mapboxMap;
+    // Variables needed to add the location engine
+    private LocationEngine locationEngine;
+    private long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
+    private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
+    // Variables needed to listen to location updates
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +32,6 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
 
         mapView = findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -42,7 +50,7 @@ public class MapActivity extends AppCompatActivity {
             }
         });
     }
-    
+
 
     @Override
     public void onResume() {
