@@ -67,7 +67,7 @@ public class dashboard extends AppCompatActivity {
         activity2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                //startActivity(new Intent(getApplicationContext(),MapsActivity.class));
             }
         });
     }
