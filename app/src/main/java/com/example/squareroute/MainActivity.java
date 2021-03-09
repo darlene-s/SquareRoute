@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         connexionForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(new Intent(getApplicationContext(),forgotpassword.class));
+               startActivity(new Intent(getApplicationContext(), ForgotPassword.class));
             }
         });
 
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                                 if(user != null){
                                     String prenom = user.prenom;
                                     Toast.makeText(MainActivity.this, "Connexion réussie ! Bienvenue " + prenom + " !" , Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(getApplicationContext(), dashboard.class));
+                                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
                                     finish();
                                 }
                             }
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(), dashboard.class));
+            startActivity(new Intent(getApplicationContext(), Dashboard.class));
         }
     }
 }

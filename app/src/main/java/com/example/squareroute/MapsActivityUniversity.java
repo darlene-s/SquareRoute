@@ -3,7 +3,6 @@ package com.example.squareroute;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -19,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivityUniversity extends FragmentActivity implements OnMapReadyCallback {
     private DatabaseReference reference;
     private GoogleMap mMap;
 
@@ -60,7 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error){
-                Toast.makeText(MapsActivity.this, "Une erreur s'est produite ! Veuillez réessayer", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivityUniversity.this, "Une erreur s'est produite ! Veuillez réessayer", Toast.LENGTH_SHORT).show();
             }
         });
         // Add a marker in Sydney and move the camera

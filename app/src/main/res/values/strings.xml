@@ -13,4 +13,5 @@
     <string name="mapbox_access_token">pk.eyJ1IjoiZGFybGVuZXN1c2hpIiwiYSI6ImNrbHBlcDMzczEyMjAyb2w2OTJrNGE2anoifQ.JiMD6dH2G1Tg5Ymps-3oUA</string>
     <string name="verif_email">Vérifier l\'e-mail</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps_bibliotheque">Map</string>
 </resources>

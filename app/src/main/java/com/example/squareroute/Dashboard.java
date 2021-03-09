@@ -10,14 +10,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 
 
-public class dashboard extends AppCompatActivity {
+public class Dashboard extends AppCompatActivity {
     Button logout, checkEmail;
-    ImageButton activity6,activity2;
+    ImageButton activity6,activity2,activity3;
     FirebaseAuth mauth;
 
     @SuppressLint("WrongViewCast")
@@ -52,7 +50,7 @@ public class dashboard extends AppCompatActivity {
                 mauth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>(){
                     @Override
                     public void onSuccess(Void aVoid){
-                        Toast.makeText(dashboard.this,"Email de vérification envoyé", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Dashboard.this,"Email de vérification envoyé", Toast.LENGTH_SHORT).show();
                         checkEmail.setVisibility(View.GONE);
                     }
                 });
@@ -61,18 +59,24 @@ public class dashboard extends AppCompatActivity {
         activity6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),squareinrealtime.class));
+                startActivity(new Intent(getApplicationContext(), SquareInRealtime.class));
             }
         });
         activity2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                startActivity(new Intent(getApplicationContext(), MapsActivityUniversity.class));
+            }
+        });
+        activity3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MapsActivityBibliotheque.class));
             }
         });
     }
     private void signOutUser() {
-        Intent mainActivity = new Intent(dashboard.this,MainActivity.class);
+        Intent mainActivity = new Intent(Dashboard.this,MainActivity.class);
         mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainActivity);
         finish();

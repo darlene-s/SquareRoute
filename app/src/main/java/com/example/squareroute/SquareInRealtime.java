@@ -7,7 +7,7 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class squareinrealtime extends AppCompatActivity {
+public class SquareInRealtime extends AppCompatActivity {
 
     ImageButton metro,rer,bus,tram;
     public static final String EXTRA_MESSAGE = "transport";
