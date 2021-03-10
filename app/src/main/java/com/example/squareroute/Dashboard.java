@@ -31,6 +31,7 @@ public class Dashboard extends AppCompatActivity {
         checkEmail = findViewById(R.id.email_check);
         activity6 = findViewById(R.id.btn_squarerealtime);
         activity2 = findViewById(R.id.btn_school);
+        activity3 = findViewById(R.id.btn_library);
 
         if(!mauth.getCurrentUser().isEmailVerified()){
             checkEmail.setVisibility(View.VISIBLE);
@@ -80,6 +81,7 @@ public class Dashboard extends AppCompatActivity {
         mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         Toast.makeText(Dashboard.this, "Déconnexion réussie !", Toast.LENGTH_SHORT).show();
         startActivity(mainActivity);
+        Toast.makeText(Dashboard.this, "Déconnexion réussie !", Toast.LENGTH_SHORT).show();
         finish();
 
 
