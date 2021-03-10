@@ -10,6 +10,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -54,7 +56,8 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Universite universite = dataSnapshot.getValue(Universite.class);
                     LatLng coordonnees = new LatLng(universite.lat,universite.lng);
-                    mMap.addMarker(new MarkerOptions().position(coordonnees).title(universite.nom_univ));
+                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.logo_univ);
+                    mMap.addMarker(new MarkerOptions().position(coordonnees).title(universite.nom_univ).icon(icon));
                 }
             }
             @Override

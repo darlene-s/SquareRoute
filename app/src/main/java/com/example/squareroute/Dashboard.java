@@ -31,6 +31,7 @@ public class Dashboard extends AppCompatActivity {
         checkEmail = findViewById(R.id.email_check);
         activity6 = findViewById(R.id.btn_squarerealtime);
         activity2 = findViewById(R.id.btn_school);
+        activity3 = findViewById(R.id.btn_library);
 
         if(!mauth.getCurrentUser().isEmailVerified()){
             checkEmail.setVisibility(View.VISIBLE);
