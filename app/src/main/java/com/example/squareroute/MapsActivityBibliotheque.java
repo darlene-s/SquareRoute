@@ -13,6 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,8 +54,10 @@ public class MapsActivityBibliotheque extends FragmentActivity implements OnMapR
                 Toast.makeText(MapsActivityBibliotheque.this, "Une erreur s'est produite ! Veuillez réessayer", Toast.LENGTH_SHORT).show();
             }
         });
-        // Add a marker in Sydney and move the camera
-        LatLng paris = new LatLng(48.8534, 2.3488);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(paris));
+        LatLngBounds parisBounds = new LatLngBounds(
+                new LatLng(-44, 113), // SW bounds
+                new LatLng(-10, 154)  // NE bounds
+        );
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parisBounds.getCenter(), 10));
     }
 }

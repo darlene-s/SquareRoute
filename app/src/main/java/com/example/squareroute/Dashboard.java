@@ -78,6 +78,7 @@ public class Dashboard extends AppCompatActivity {
     private void signOutUser() {
         Intent mainActivity = new Intent(Dashboard.this,MainActivity.class);
         mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Toast.makeText(Dashboard.this, "Déconnexion réussie !", Toast.LENGTH_SHORT).show();
         startActivity(mainActivity);
         finish();
 

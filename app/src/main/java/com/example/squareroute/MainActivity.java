@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this, "Connexion réussie ! Bienvenue " + prenom + " !" , Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(getApplicationContext(), Dashboard.class));
                                     finish();
+                                } else {
+                                    Toast.makeText(MainActivity.this, " Votre email ou mot de passe est invalide", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
