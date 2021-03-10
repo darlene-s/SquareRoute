@@ -3,7 +3,10 @@ package com.example.squareroute;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -13,6 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,9 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.util.List;
+
 public class MapsActivityUniversity extends FragmentActivity implements OnMapReadyCallback {
     private DatabaseReference reference;
     private GoogleMap mMap;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +41,35 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        searchView=findViewById(R.id.search);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = searchView.getQuery().toString();
+                List<Address> addressList = null;
+
+                if(location != null || !location.equals("")){
+                    Geocoder geocoder = new Geocoder(MapsActivityUniversity.this);
+                    try{
+                        addressList = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    Address address = addressList.get(0);
+                    LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(location));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     /**
@@ -65,8 +102,10 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                 Toast.makeText(MapsActivityUniversity.this, "Une erreur s'est produite ! Veuillez réessayer", Toast.LENGTH_SHORT).show();
             }
         });
-        // Add a marker in Sydney and move the camera
-        LatLng paris = new LatLng(48.8534, 2.3488);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(paris));
+        LatLngBounds parisBounds = new LatLngBounds(
+                new LatLng(48.646582, 1.868754),
+                new LatLng(49.124015, 2.881794)
+        );
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parisBounds.getCenter(), 10));
     }
 }

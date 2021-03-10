@@ -3,9 +3,9 @@ package com.example.squareroute;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+
 import android.os.Bundle;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,9 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MapsActivityBibliotheque extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivityBibliotheque extends FragmentActivity implements
+        OnMapReadyCallback {
     private DatabaseReference reference;
     private GoogleMap mMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class MapsActivityBibliotheque extends FragmentActivity implements OnMapR
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -55,9 +58,10 @@ public class MapsActivityBibliotheque extends FragmentActivity implements OnMapR
             }
         });
         LatLngBounds parisBounds = new LatLngBounds(
-                new LatLng(-44, 113), // SW bounds
-                new LatLng(-10, 154)  // NE bounds
+                new LatLng(48.646582, 1.868754),
+                new LatLng(49.124015, 2.881794)
         );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parisBounds.getCenter(), 10));
     }
+
 }
