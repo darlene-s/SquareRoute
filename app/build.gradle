@@ -42,5 +42,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.1'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     
 }
