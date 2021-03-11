@@ -17,19 +17,25 @@
         tools:layout_editor_absoluteX="-115dp"
         tools:layout_editor_absoluteY="47dp" />
 
-    <SearchView
-        android:id="@+id/search"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/btn_round"
-        android:backgroundTint="#008037"
-        android:iconifiedByDefault="false"
-        android:queryHint="Rechercher..."
-        android:textColor="#FFFFFF"
+        android:layout_marginTop="6dp"
+        tools:layout_editor_absoluteX="6dp"
+        tools:ignore="MissingConstraints">
+
+    </androidx.cardview.widget.CardView>
+
+    <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="379dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/map" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
