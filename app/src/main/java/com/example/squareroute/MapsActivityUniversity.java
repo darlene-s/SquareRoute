@@ -1,14 +1,20 @@
 package com.example.squareroute;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,22 +24,49 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import android.location.Location;
+
+import android.view.View;
+
+
+
+
+import com.google.android.gms.location.LocationCallback;
+
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 
 public class MapsActivityUniversity extends FragmentActivity implements OnMapReadyCallback {
     private DatabaseReference reference;
     private GoogleMap mMap;
-    private SearchView searchView;
+    private static String TAG = "Info";
+
+    private Location mLastKnownLocation;
+    private LocationCallback locationCallback;
+
+    private View mapView;
+    private Button btnFind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_SquareRoute);
         setContentView(R.layout.activity_maps);
@@ -42,33 +75,37 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        searchView=findViewById(R.id.search);
+        String apiKey = getString(R.string.google_api_key);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
+        if (!Places.isInitialized()){
+            Places.initialize(getApplicationContext(), String.valueOf(R.string.google_api_key));
+        }
+
+        PlacesClient placesClient = Places.createClient(this);
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setLocationBias(RectangularBounds.newInstance(
+                new LatLng(48.646582, 1.868754),
+                new LatLng(49.124015, 2.881794)
+        ));
+
+        autocompleteFragment.setCountries("FR");
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener(){
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                String location = searchView.getQuery().toString();
-                List<Address> addressList = null;
-
-                if(location != null || !location.equals("")){
-                    Geocoder geocoder = new Geocoder(MapsActivityUniversity.this);
-                    try{
-                        addressList = geocoder.getFromLocationName(location, 1);
-                    } catch (IOException e){
-                        e.printStackTrace();
-                    }
-                    Address address = addressList.get(0);
-                    LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
-                    mMap.addMarker(new MarkerOptions().position(latLng).title(location));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                }
-                return false;
+            public void onPlaceSelected(Place place){
+                Log.i(TAG,"Place" + place.getName() + ", " + place.getId());
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public void onError(Status status){
+                Log.i(TAG,"An error occured: " + status);
             }
+
         });
     }
 
@@ -107,5 +144,7 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                 new LatLng(49.124015, 2.881794)
         );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parisBounds.getCenter(), 10));
+
     }
+
 }
