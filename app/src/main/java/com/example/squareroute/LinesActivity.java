@@ -9,6 +9,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 public class LinesActivity extends AppCompatActivity {
