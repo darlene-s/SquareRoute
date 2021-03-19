@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.appcompat.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,9 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,6 +35,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
@@ -41,11 +48,29 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.EncodedPolyline;
 
 import android.location.Location;
 
@@ -55,6 +80,7 @@ import android.view.View;
 import com.google.android.gms.location.LocationCallback;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,9 +94,12 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
     private LocationCallback locationCallback;
 
     private View mapView;
-    private Button btnLocalisation;
+    private Button btnLocalisation, btnLocalisation2;
 
     private Marker markerSearch;
+
+    private Marker markerLocalisation;
+
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     // Used for selecting the current place.
     private static final int M_MAX_ENTRIES = 5;
@@ -80,8 +109,7 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
     private LatLng[] likelyPlaceLatLngs;
 
 
-
-
+    private String apiKey = "AIzaSyAzsTP2GsxOFNjy-PUN0De5qWjn-0-Wvn4";
 
     // The entry point to the Places API.
     private PlacesClient placesClient;
@@ -95,6 +123,15 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
     LatLng latLngLocalisation;
 
 
+
+    private List<Polyline> polylines=null;
+    private LatLng start;
+    private LatLng destination;
+
+    private Polyline currentPolyline;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -106,12 +143,6 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        btnLocalisation = findViewById(R.id.btnLocalisation);
-
-
-
-        String apiKey = "AIzaSyAzsTP2GsxOFNjy-PUN0De5qWjn-0-Wvn4";
 
 
         if (!Places.isInitialized()) {
@@ -139,10 +170,18 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                     markerSearch = null;
                 }
                 Log.i(TAG, "Place" + place.getName() + ", " + place.getId());
-                LatLng destinationLatLng = place.getLatLng();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16));
-                markerSearch = mMap.addMarker(new MarkerOptions().position(destinationLatLng).title(place.getName()));
+                destination = place.getLatLng();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destination, 16));
+                markerSearch = mMap.addMarker(new MarkerOptions().position(destination).title(place.getName()));
 
+                if(lastKnownLocation!=null){
+
+                    start = (new LatLng(lastKnownLocation.getLatitude()
+                            ,lastKnownLocation.getLongitude()));
+                    traceRoute();
+                    Toast.makeText(MapsActivityUniversity.this,start.latitude + " " + start.longitude,Toast.LENGTH_LONG).show();
+
+                }
             }
 
             @Override
@@ -153,105 +192,7 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
 
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-        btnLocalisation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get the current location of the device and set the position of the map.
-                showCurrentPlace();
-            }
-        });
     }
-
-    private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        locationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationPermissionGranted = true;
-                }
-            }
-        }
-        updateLocationUI();
-    }
-
-    private void updateLocationUI() {
-        if (mMap == null) {
-            return;
-        }
-        try {
-            if (locationPermissionGranted) {
-                mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(true);
-            } else {
-                mMap.setMyLocationEnabled(false);
-                mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                lastKnownLocation = null;
-                getLocationPermission();
-            }
-        } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage());
-        }
-    }
-
-    private void getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        try {
-            System.out.println("TEST");
-            if (locationPermissionGranted) {
-
-                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            lastKnownLocation = task.getResult();
-                            if (lastKnownLocation != null) {
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(lastKnownLocation.getLatitude(),
-                                                lastKnownLocation.getLongitude()), 10));
-                            }
-                        } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(new LatLng(48.646582, 1.868754),10));
-                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                        }
-                    }
-                });
-            }
-        } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage(), e);
-        }
-    }
-
 
 
 
@@ -319,6 +260,126 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                 return infoWindow;
             }
         });
+
+        btnLocalisation = findViewById(R.id.btnLocalisation);
+        btnLocalisation2 = findViewById(R.id.btnLocalisation2);
+
+        btnLocalisation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the current location of the device and set the position of the map.
+                getDeviceLocation();
+                showCurrentPlace();
+            }
+        });
+
+        btnLocalisation2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(lastKnownLocation!=null && destination !=null){
+                    destination = (new LatLng(lastKnownLocation.getLatitude()
+                            ,lastKnownLocation.getLongitude()));
+                    traceRoute();
+                }
+                else{
+                    Toast.makeText(MapsActivityUniversity.this,"Veuillez choisir une destination/indiquer votre position",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+
+    }
+
+    private void getLocationPermission() {
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        locationPermissionGranted = false;
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    locationPermissionGranted = true;
+                }
+            }
+        }
+        updateLocationUI();
+    }
+
+    private void updateLocationUI() {
+        if (mMap == null) {
+            return;
+        }
+        try {
+            if (locationPermissionGranted) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } else {
+                mMap.setMyLocationEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                lastKnownLocation = null;
+                getLocationPermission();
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
+
+    private void getDeviceLocation() {
+        /*
+         * Get the best and most recent location of the device, which may be null in rare
+         * cases when a location is not available.
+         */
+        try {
+            if (locationPermissionGranted) {
+
+                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            // Set the map's camera position to the current location of the device.
+                            lastKnownLocation = task.getResult();
+                            start = (new LatLng(lastKnownLocation.getLatitude()
+                                    ,lastKnownLocation.getLongitude()));
+                            Toast.makeText(MapsActivityUniversity.this,start.latitude + " " + start.longitude,Toast.LENGTH_LONG).show();
+                            if (lastKnownLocation != null) {
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(lastKnownLocation.getLatitude(),
+                                                lastKnownLocation.getLongitude()), 16));
+                            }
+                        } else {
+                            Log.d(TAG, "Current location is null. Using defaults.");
+                            Log.e(TAG, "Exception: %s", task.getException());
+                            mMap.moveCamera(CameraUpdateFactory
+                                    .newLatLngZoom(new LatLng(48.646582, 1.868754),10));
+                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
     }
 
     @Override
@@ -402,6 +463,7 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
 
     private void openPlacesDialog() {
         // Ask the user to choose the place where they are now.
+        Toast.makeText(MapsActivityUniversity.this,"Choissisez l'endroit où vous vous situez s'il est présent dans la liste",Toast.LENGTH_LONG).show();
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -414,7 +476,12 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
 
                 // Add a marker for the selected place, with an info window
                 // showing information about that place.
-                mMap.addMarker(new MarkerOptions()
+
+                if (!(markerLocalisation == null)) {
+                    markerLocalisation.remove();
+                    markerLocalisation = null;
+                }
+                markerLocalisation = mMap.addMarker(new MarkerOptions()
                         .title(likelyPlaceNames[which])
                         .position(markerLatLng)
                         .snippet(markerSnippet));
@@ -422,6 +489,12 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                 // Position the map's camera at the location of the marker.
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng,
                         16));
+                Location temp = new Location(LocationManager.GPS_PROVIDER);
+                temp.setLatitude(markerLatLng.latitude);
+                temp.setLongitude(markerLatLng.longitude);
+                lastKnownLocation = new Location(temp);
+                start = (new LatLng(lastKnownLocation.getLatitude()
+                        ,lastKnownLocation.getLongitude()));
             }
         };
 
@@ -433,4 +506,107 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
     }
 
 
+
+
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+        return url;
+    }
+
+    public void traceRoute() {
+        //Execute Directions API request
+        if (start != null && destination != null) {
+
+            if (!(markerLocalisation == null)) {
+                markerLocalisation.remove();
+                markerLocalisation = null;
+            }
+            if (!(markerSearch == null)) {
+                markerSearch.remove();
+                markerSearch = null;
+            }
+            Toast.makeText(MapsActivityUniversity.this,start.latitude + " " + start.longitude,Toast.LENGTH_LONG).show();
+            markerLocalisation = mMap.addMarker(new MarkerOptions().position(start).title("Position actuelle"));
+            markerSearch = mMap.addMarker(new MarkerOptions().position(destination).title("Destination"));
+
+
+            List<LatLng> path = new ArrayList();
+            GeoApiContext context = new GeoApiContext.Builder()
+                    .apiKey(apiKey)
+                    .build();
+            String startString = start.latitude + "," + start.longitude;
+            String destinationString = destination.latitude + "," + destination.longitude;
+            DirectionsApiRequest req = DirectionsApi.getDirections(context, startString, destinationString);
+            try {
+                DirectionsResult res = req.await();
+
+                //Loop through legs and steps to get encoded polylines of each step
+                if (res.routes != null && res.routes.length > 0) {
+                    DirectionsRoute route = res.routes[0];
+
+                    if (route.legs != null) {
+                        for (int i = 0; i < route.legs.length; i++) {
+                            DirectionsLeg leg = route.legs[i];
+                            if (leg.steps != null) {
+                                for (int j = 0; j < leg.steps.length; j++) {
+                                    DirectionsStep step = leg.steps[j];
+                                    if (step.steps != null && step.steps.length > 0) {
+                                        for (int k = 0; k < step.steps.length; k++) {
+                                            DirectionsStep step1 = step.steps[k];
+                                            EncodedPolyline points1 = step1.polyline;
+                                            if (points1 != null) {
+                                                //Decode polyline and add points to list of route coordinates
+                                                List<com.google.maps.model.LatLng> coords1 = points1.decodePath();
+                                                for (com.google.maps.model.LatLng coord1 : coords1) {
+                                                    path.add(new LatLng(coord1.lat, coord1.lng));
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        EncodedPolyline points = step.polyline;
+                                        if (points != null) {
+                                            //Decode polyline and add points to list of route coordinates
+                                            List<com.google.maps.model.LatLng> coords = points.decodePath();
+                                            for (com.google.maps.model.LatLng coord : coords) {
+                                                path.add(new LatLng(coord.lat, coord.lng));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                Log.e(TAG, ex.getLocalizedMessage());
+            }
+
+            //Draw the polyline
+            if (path.size() > 0) {
+                PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
+                mMap.addPolyline(opts);
+            }
+
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start, 11));
+        }
+        else{
+            Toast.makeText(MapsActivityUniversity.this,"Choissisez l'endroit où vous vous situez s'il est présent dans la liste",Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
+
+
+

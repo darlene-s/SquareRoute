@@ -34,8 +34,8 @@
 
     <ImageView
         android:id="@+id/imageView11"
-        android:layout_width="410dp"
-        android:layout_height="391dp"
+        android:layout_width="411dp"
+        android:layout_height="385dp"
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,29 +73,27 @@
         android:id="@+id/btn_house"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:background="#00FFFFFF"
         android:src="@drawable/btn_house"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView11"
-        app:layout_constraintVertical_bias="0.206"
         tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/btn_school"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginEnd="8dp"
         android:background="#00FFFFFF"
         android:src="@drawable/btn_school"
         app:layout_constraintBottom_toTopOf="@+id/btn_favorites"
-        app:layout_constraintEnd_toStartOf="@+id/btn_newitinerary"
         app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toEndOf="@+id/btn_house"
         app:layout_constraintTop_toTopOf="@+id/imageView11"
-        app:layout_constraintVertical_bias="0.444"
+        app:layout_constraintVertical_bias="0.438"
         tools:ignore="ContentDescription" />
 
     <ImageButton
@@ -139,12 +137,12 @@
 
     <ImageButton
         android:id="@+id/btn_library"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="436dp"
+        android:layout_width="99dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="448dp"
         android:backgroundTint="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.633"
+        app:layout_constraintHorizontal_bias="0.58"
         app:layout_constraintStart_toEndOf="@+id/btn_school"
         app:layout_constraintTop_toTopOf="@+id/imageView9"
         app:srcCompat="@drawable/btn_school_library"

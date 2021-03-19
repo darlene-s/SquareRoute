@@ -57,6 +57,7 @@ public class Dashboard extends AppCompatActivity {
                 });
             }
         });
+
         activity6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
