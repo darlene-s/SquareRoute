@@ -1,4 +1,4 @@
-package com.example.squareroute.Activity2;
+package com.example.squareroute.Activity1;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;

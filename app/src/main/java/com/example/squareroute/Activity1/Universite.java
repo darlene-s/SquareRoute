@@ -1,4 +1,4 @@
-package com.example.squareroute.Activity2;
+package com.example.squareroute.Activity1;
 
 /**
  * @author G.Christian | S.Darlène | T.Kenny

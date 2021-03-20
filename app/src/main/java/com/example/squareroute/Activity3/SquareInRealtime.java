@@ -1,4 +1,4 @@
-package com.example.squareroute.Activity4;
+package com.example.squareroute.Activity3;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.squareroute.Activity4.LinesActivity;
 import com.example.squareroute.R;
 
 /**

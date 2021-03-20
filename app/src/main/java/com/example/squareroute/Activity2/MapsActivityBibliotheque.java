@@ -1,4 +1,4 @@
-package com.example.squareroute.Activity3;
+package com.example.squareroute.Activity2;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;

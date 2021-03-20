@@ -1,4 +1,4 @@
-package com.example.squareroute.Activity3;
+package com.example.squareroute.Activity2;
 /**
  * @author G.Christian | S.Darlène | T.Kenny
  * Classe Bibliothèque qui permet de faire le lien entre l'entité Bibliothèque de la base de donnée

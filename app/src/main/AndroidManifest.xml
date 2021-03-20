@@ -37,12 +37,12 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".Activity3.MapsActivityBibliotheque"
+            android:name=".Activity2.MapsActivityBibliotheque"
             android:label="@string/title_activity_maps_bibliotheque" />
         <activity
-            android:name=".Activity2.MapsActivityUniversity"
+            android:name=".Activity1.MapsActivityUniversity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".Activity4.SquareInRealtime" />
+        <activity android:name=".Activity3.SquareInRealtime" />
         <activity android:name=".BasicActivity.ForgotPassword" />
         <activity
             android:name=".BasicActivity.Dashboard"
@@ -60,13 +60,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity4.LinesActivity"
+            android:name=".Activity3.LinesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity4.StationsActivity"
+            android:name=".Activity3.StationsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity4.HorairesActivity"
+            android:name=".Activity3.HorairesActivity"
             android:screenOrientation="portrait" />
     </application>
 

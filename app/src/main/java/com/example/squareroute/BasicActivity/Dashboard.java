@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.squareroute.Activity3.MapsActivityBibliotheque;
-import com.example.squareroute.Activity2.MapsActivityUniversity;
+import com.example.squareroute.Activity2.MapsActivityBibliotheque;
+import com.example.squareroute.Activity1.MapsActivityUniversity;
 import com.example.squareroute.R;
-import com.example.squareroute.Activity4.SquareInRealtime;
+import com.example.squareroute.Activity3.SquareInRealtime;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.gms.tasks.OnSuccessListener;
 /**
@@ -25,7 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 public class Dashboard extends AppCompatActivity {
     Button logout, checkEmail;
-    ImageButton activity6,activity2,activity3;
+    ImageButton activity1,activity2,activity3;
     FirebaseAuth mauth;
 
     @SuppressLint("WrongViewCast")
@@ -46,7 +46,7 @@ public class Dashboard extends AppCompatActivity {
         mauth = FirebaseAuth.getInstance();
         logout = findViewById(R.id.logout);
         checkEmail = findViewById(R.id.email_check);
-        activity6 = findViewById(R.id.btn_squarerealtime);
+        activity1 = findViewById(R.id.btn_squarerealtime);
         activity2 = findViewById(R.id.btn_school);
         activity3 = findViewById(R.id.btn_library);
 
@@ -93,7 +93,7 @@ public class Dashboard extends AppCompatActivity {
                 });
             }
         });
-        activity6.setOnClickListener(new View.OnClickListener() {
+        activity1.setOnClickListener(new View.OnClickListener() {
             /**
              * Fonction onClick() prenant en paramètre une vue (bouton de redirection vers l'activité SquareInRealtime)
              * et qui permet de lancer l'activité SquareInRealtime

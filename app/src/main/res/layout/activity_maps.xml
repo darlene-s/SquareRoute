@@ -7,7 +7,7 @@
     android:background="@color/main_green"
     android:foregroundTint="#FFFFFF"
     android:clickable="true"
-    tools:context=".Activity2.MapsActivityUniversity"
+    tools:context=".Activity1.MapsActivityUniversity"
     android:focusable="true">
 
 <!--    <fragment-->
