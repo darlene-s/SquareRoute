@@ -10,31 +10,6 @@
     tools:context=".Activity1.MapsActivityUniversity"
     android:focusable="true">
 
-<!--    <fragment-->
-<!--        android:id="@+id/map"-->
-<!--        android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        tools:context=".MapsActivityUniversity"-->
-<!--        tools:layout_editor_absoluteX="-115dp"-->
-<!--        tools:layout_editor_absoluteY="47dp"-->
-<!--        >-->
-
-<!--    </fragment>-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/autocomplete_fragment"-->
-<!--        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
-<!--        android:layout_width="379dp"-->
-<!--        android:layout_height="43dp"-->
-<!--        android:layout_marginTop="28dp"-->
-<!--        android:visibility="visible"-->
-<!--        android:background="#fff"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/map"-->
-<!--        />-->
-
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
