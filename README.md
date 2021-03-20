@@ -1,5 +1,5 @@
 # Projet d'applications mobiles IUT de Paris Rives de Seine SquareRoute 2021
-## Programmé en Java 
+## Programmé en Java, Release Version
 ### Par Gamo Christian | Souccouchetty Darlène | Tendon Kenny
 
 ### Principe de l'application
@@ -16,4 +16,5 @@ compte de leur localisation, ou d'un point de départ qu'ils auront indiqué au 
 ### Outils utilisés
 Front-end (UX-UI, View) : Adobe XD | Layouts en XML
 Back-end : Java
+ 
 
