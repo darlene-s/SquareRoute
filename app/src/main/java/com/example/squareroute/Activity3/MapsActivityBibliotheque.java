@@ -1,4 +1,4 @@
-package com.example.squareroute;
+package com.example.squareroute.Activity3;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.example.squareroute.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,7 +22,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+/**
+ * @author G.Christian | S.Darlène | T.Kenny
+ * Classe MapsActivityUniversity : Classe  MapsActivityBibliotheque , utilise l'API Google Maps
+ * (Location service, direction service et affichage de la carte), cette activité permet à l'utilisateur
+ * d'avoir un tracé depuis sa localisation/point de départ vers son point d'arrivée. Il y a également une liste
+ * de bibliothèques épinglée à la carte.
+ */
 public class MapsActivityBibliotheque extends FragmentActivity implements
         OnMapReadyCallback {
     private DatabaseReference reference;

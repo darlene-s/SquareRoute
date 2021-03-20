@@ -1,24 +1,27 @@
-package com.example.squareroute;
+package com.example.squareroute.Activity2;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
-import androidx.appcompat.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
+import com.example.squareroute.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -47,17 +50,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import android.location.Location;
-
-import android.view.View;
-
-
-import com.google.android.gms.location.LocationCallback;
-
-
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author G.Christian | S.Darlène | T.Kenny
+ * Classe MapsActivityUniversity : Classe  MapsActivityUniversity , utilise l'API Google Maps
+ * (Location service, direction service et affichage de la carte), cette activité permet à l'utilisateur
+ * d'avoir un tracé depuis sa localisation/point de départ vers son point d'arrivée. Il y a également une liste
+ * d'établissements universitaires épinglée à la carte.
+ */
 
 public class MapsActivityUniversity extends FragmentActivity implements OnMapReadyCallback {
     private DatabaseReference reference;
@@ -68,49 +70,41 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
     private LocationCallback locationCallback;
 
     private View mapView;
-    private Button btnLocalisation;
+    private Button btnLocalisation, btnItineraire;
 
     private Marker markerSearch;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    // Used for selecting the current place.
     private static final int M_MAX_ENTRIES = 5;
-    private String[] likelyPlaceNames;
-    private String[] likelyPlaceAddresses;
+    private String[] likelyPlaceNames, likelyPlaceAddresses;
     private List[] likelyPlaceAttributions;
     private LatLng[] likelyPlaceLatLngs;
-
-
-
-
-
-    // The entry point to the Places API.
     private PlacesClient placesClient;
-
     private boolean locationPermissionGranted;
 
-    // The geographical location where the device is currently located. That is, the last-known
-    // location retrieved by the Fused Location Provider.
     private Location lastKnownLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     LatLng latLngLocalisation;
 
-
+    /**
+     * Fonction onCreate() de base qui représente une étape du cycle de vie de l'activité
+     * Initialisation de l'activité MapsActivityUniversity
+     *
+     * @param savedInstanceState : Variable permettant de sauvegarder l'état associé à l'instance courante de
+     *                           l'activité MapsActivityUniversity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_SquareRoute);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        // Retourne le SupportMapFragment et notifie l'android system quand la map est prête à être utilisée
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         btnLocalisation = findViewById(R.id.btnLocalisation);
-
-
-
+        btnItineraire = findViewById(R.id.btnItineraire);
+        //Clé de l'API Google Maps
         String apiKey = "AIzaSyAzsTP2GsxOFNjy-PUN0De5qWjn-0-Wvn4";
 
 
@@ -132,6 +126,12 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            /**
+             * Fonction onPlaceSelected() qui ajoute un marker et adapte l'angle de vue de la map
+             * en fonction du lieu choisi
+             *
+             * @param place : Lieu entré dans la barre de recherche
+             */
             @Override
             public void onPlaceSelected(Place place) {
                 if (!(markerSearch == null)) {
@@ -145,6 +145,12 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
 
             }
 
+            /**
+             * Fonction onError(), renvoie une erreur si un problème intervient au niveau du positionnement du marker où
+             * du lieu indiqué au niveau de la barre de recherche
+             *
+             * @param status : Paramètre correspondant au statut de réalisation de la fonction onPlaceSelected()
+             */
             @Override
             public void onError(Status status) {
                 Log.i(TAG, "An error occured: " + status);
@@ -155,20 +161,27 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         btnLocalisation.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Fonction onClick() prenant en paramètre une vue (bouton de localisation)
+             * et qui permet à l'utilisateur d'apercevoir sa position en temps réel sur la carte et
+             * de recentrer la vue de la map sur la position de l'utilisateur
+             *
+             * @param v :  vue représentant le bouton de localisation lorsqu'il est cliqué
+             */
             @Override
             public void onClick(View v) {
-                // Get the current location of the device and set the position of the map.
                 showCurrentPlace();
             }
         });
     }
 
+    /**
+     * Fonction getLocationPermission()
+     * <p>
+     * Demande la permission de localisation, afin que nous puissions obtenir la localisation de l'appareil.
+     * Le résultat de la demande de permission est traité par une callback onRequestPermissionsResult.
+     */
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -180,6 +193,15 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         }
     }
 
+    /**
+     * Fonction onRequestPermissionResult(), appelée lorsqu'une demande de géolocalisation est formulée par l'utilisateur,
+     * elle vérifie si la demande est compatible avec les autorisations de géolocalisation accordées à l'application par l'appareil.
+     *
+     * @param requestCode  : Array d'Int associée au code de requête passé dans ActivityCompat.requestPermissions(android.app.Activity, String[], int)
+     * @param permissions  : Array de String correspondant aux permissions demandées.
+     * @param grantResults : Array d'Int associée  résultats de l'octroi des permissions correspondantes qui sont soit PackageManagerPERMISSION_GRANTED soit
+     *                     PackageManager.PERMISSION_DENIED.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -197,6 +219,12 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         updateLocationUI();
     }
 
+    /**
+     * Fonction updateLocationUI()
+     * <p>
+     * Permet de mettre à jour la localisation de l'utilisateur automatiquement
+     * en fonction des autorisations accordées par l'appareil à SquareRoute
+     */
     private void updateLocationUI() {
         if (mMap == null) {
             return;
@@ -211,16 +239,18 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                 lastKnownLocation = null;
                 getLocationPermission();
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
 
+    /**
+     * Fonction getDeviceLocation()
+     * <p>
+     * Permet d'obtenir la meilleure et plus récente localisation de l'appareil,
+     * qui peut être nulle dans de rares cas où une localisation n'est pas disponible.
+     */
     private void getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
         try {
             System.out.println("TEST");
             if (locationPermissionGranted) {
@@ -241,28 +271,26 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
                             mMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(new LatLng(48.646582, 1.868754),10));
+                                    .newLatLngZoom(new LatLng(48.646582, 1.868754), 10));
                             mMap.getUiSettings().setMyLocationButtonEnabled(false);
                         }
                     }
                 });
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage(), e);
         }
     }
 
 
-
-
     /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+     * Fonction onMapReady()
+     *
+     * Manipule la carte une fois disponible, ce callback est déclenché lorsque la carte est prête à être utilisée.
+     * La carte est initialisée avec les permissions de localisation, la géolocalisation de l'utilisateur, une vue centrée sur Paris
+     * et son agglomération et des markers associés aux universités parisiennes répertoriées au sein de la realtime database
+     *
+     * @param googleMap : Fragment associé à la carte Google Map Universités
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -270,19 +298,24 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         getLocationPermission();
         updateLocationUI();
         mMap = googleMap;
-
-
         reference = FirebaseDatabase.getInstance().getReference("Universite");
-        reference.addListenerForSingleValueEvent(new ValueEventListener(){
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot){
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Universite universite = dataSnapshot.getValue(Universite.class);
-                    LatLng coordonnees = new LatLng(universite.lat,universite.lng);
+                    LatLng coordonnees = new LatLng(universite.lat, universite.lng);
                     BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.logo_univ);
                     mMap.addMarker(new MarkerOptions().position(coordonnees).title(universite.nom_univ).icon(icon));
                 }
             }
+
+            /**
+             * Fonction onCancelled(), prend en paramètre une erreur si un problème de récupération des universités repertoriées
+             * intervient
+             *
+             * @param error : Erreur liée à la récupération des données de l'entité Université au niveau de la BD
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error){
                 Toast.makeText(MapsActivityUniversity.this, "Une erreur s'est produite ! Veuillez réessayer", Toast.LENGTH_SHORT).show();
@@ -294,19 +327,28 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parisBounds.getCenter(), 10));
 
-        // Use a custom info window adapter to handle multiple lines of text in the
-        // info window contents.
         this.mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
+            /**
+             * Fonction getInfoWindow()
+             * Doit retourner "null" , pour que getInfoContents() soit appelé ensuite.
+             *
+             * @param arg0 : Booléen 0 si les fonctions précédentes sont correctement appelées, 1 si il y a une erreur
+             * @return
+             */
             @Override
-            // Return null here, so that getInfoContents() is called next.
             public View getInfoWindow(Marker arg0) {
                 return null;
             }
 
+            /**
+             * Fonction getInfoContents()
+             * Permet de gonfler les mises en page de la fenêtre d'information, du titre et de l'extrait.
+             *
+             * @param marker Marker contenant des informations sur les universités
+             * @return
+             */
             @Override
             public View getInfoContents(Marker marker) {
-                // Inflate the layouts for the info window, title and snippet.
                 View infoWindow = getLayoutInflater().inflate(R.layout.custom_info_contents,
                         (FrameLayout) findViewById(R.id.map), false);
 
@@ -321,6 +363,14 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         });
     }
 
+    /**
+     * Fonction onOptionsItemSelected
+     * Permet d'appeler la fonction showCurrentPlace si le bouton localisation
+     * est cliqué et que la localisation est activée
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.btnLocalisation) {
@@ -329,32 +379,33 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         return true;
     }
 
+    /**
+     * Fonction showCurrentPlace()
+     * Renvoie à l'utilisateur des lieux d'intérêt à proximité de lui pour en déduire sa localisation
+     */
     private void showCurrentPlace() {
         if (mMap == null) {
             return;
         }
 
         if (locationPermissionGranted) {
-            // Use fields to define the data types to return.
             List<Place.Field> placeFields = Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS,
                     Place.Field.LAT_LNG);
-
-            // Use the builder to create a FindCurrentPlaceRequest.
             FindCurrentPlaceRequest request =
                     FindCurrentPlaceRequest.newInstance(placeFields);
-
-            // Get the likely places - that is, the businesses and other points of interest that
-            // are the best match for the device's current location.
-            @SuppressWarnings("MissingPermission") final
-            Task<FindCurrentPlaceResponse> placeResult =
+            @SuppressWarnings("MissingPermission") final Task<FindCurrentPlaceResponse> placeResult =
                     placesClient.findCurrentPlace(request);
-            placeResult.addOnCompleteListener (new OnCompleteListener<FindCurrentPlaceResponse>() {
+            placeResult.addOnCompleteListener(new OnCompleteListener<FindCurrentPlaceResponse>() {
+                /**
+                 * Fonction onComplete(), qui prend en paramètre une tâche qui est la la recherche
+                 * du lieu actuel et des lieux a proximité
+                 *
+                 * @param task : Tâche associée à la recherche du lieu actuel et des lieux a proximité
+                 */
                 @Override
                 public void onComplete(@NonNull Task<FindCurrentPlaceResponse> task) {
                     if (task.isSuccessful() && task.getResult() != null) {
                         FindCurrentPlaceResponse likelyPlaces = task.getResult();
-
-                        // Set the count, handling cases where less than 5 entries are returned.
                         int count;
                         if (likelyPlaces.getPlaceLikelihoods().size() < M_MAX_ENTRIES) {
                             count = likelyPlaces.getPlaceLikelihoods().size();
@@ -381,18 +432,13 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                                 break;
                             }
                         }
-
-                        // Show a dialog offering the user the list of likely places, and add a
-                        // marker at the selected place.
                         MapsActivityUniversity.this.openPlacesDialog();
-                    }
-                    else {
+                    } else {
                         Log.e(TAG, "Exception: %s", task.getException());
                     }
                 }
             });
         } else {
-            // The user has not granted permission.
             Log.i(TAG, "The user did not grant location permission.");
 
 
@@ -400,32 +446,37 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
         }
     }
 
+    /**
+     * Fonction openPlacesDialog
+     * Ouvre une fenêtre de dialogue avec les lieux à proximité de la localisation actuelle de l'utilisateur
+     */
     private void openPlacesDialog() {
         // Ask the user to choose the place where they are now.
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            /**
+             * Fonction onClick
+             * Récupère le lieu sélectionné par l'utilisateur parmi la liste de lieux à proximité affichée
+             * @param dialog : Interface de dialogue
+             * @param which : Argument contenant la position du lieu choisi parmi la liste de lieux dans l'interface de dialogue
+             */
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // The "which" argument contains the position of the selected item.
                 LatLng markerLatLng = likelyPlaceLatLngs[which];
                 String markerSnippet = likelyPlaceAddresses[which];
                 if (likelyPlaceAttributions[which] != null) {
                     markerSnippet = markerSnippet + "\n" + likelyPlaceAttributions[which];
                 }
 
-                // Add a marker for the selected place, with an info window
-                // showing information about that place.
                 mMap.addMarker(new MarkerOptions()
                         .title(likelyPlaceNames[which])
                         .position(markerLatLng)
                         .snippet(markerSnippet));
 
-                // Position the map's camera at the location of the marker.
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng,
                         16));
             }
         };
 
-        // Display the dialog.
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Localisation")
                 .setItems(likelyPlaceNames, listener)

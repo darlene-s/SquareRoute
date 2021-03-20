@@ -1,4 +1,4 @@
-package com.example.squareroute;
+package com.example.squareroute.Activity4;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,9 +14,19 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
+/**
+ * @author G.Christian | S.Darlène | T.Kenny
+ * Classe APIServices qui utilise la lib OkHttp3 pour faire des requêtes
+ * à l'API du réseau RATP permettant d'avoir des informations en temps réel sur le réseau
+ *
+ */
 public class APIServices {
-
+    /**
+     * Fonction getLinesFromTransport()
+     * Permet de récupérer les lignes en fonction du mode de transport
+     * @param transport String représentant le mode de transport (métro,bus,tram,RER)
+     * @return
+     */
     public List<String> getLinesFromTransport(final String transport){
 
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -25,11 +35,25 @@ public class APIServices {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         List<String> newList = new ArrayList<String>();
         Callback callback = new Callback() {
+            /**
+             * Fonction onFailure()
+             * Permet de lever une exception si la ligne n'est pas récupérée
+             * @param call : Appel à l'exception
+             * @param e : Exception
+             */
             @Override
             public void onFailure(Call call, IOException e) {
                 countDownLatch.countDown();
             }
 
+            /**
+             * Fonction onResponse()
+             * Permet de récupérer un json object correspondant aux lignes en fonction
+             * du mode de transport si aucune exception est levée
+             * @param call : Appel à l'exception
+             * @param response : Réponse à la requête
+             * @throws IOException : Exception
+             */
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()) {
@@ -141,6 +165,13 @@ public class APIServices {
 
     }
 
+    /**
+     * Fonction GetStationsFromLine()
+     * Permet de récupérer les stations en fonction d'une ligne de transport et du mode de transport
+     * @param line  : String représentant une ligne de métro,bus,tram,RER
+     * @param transport String représentant le mode de transport (métro,bus,tram,RER)
+     * @return
+     */
     public List<String> GetStationsFromLine(String line,String transport){
 
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -149,12 +180,26 @@ public class APIServices {
         List<String> newList = new ArrayList<String>();
 
         Callback callback = new Callback() {
+            /**
+             * Fonction onFailure()
+             * Permet de lever une exception si la station n'est pas récupérée
+             * @param call : Appel à l'exception
+             * @param e : Exception
+             */
             @Override
             public void onFailure(Call call, IOException e) {
                 countDownLatch.countDown();
 
             }
 
+            /**
+             * Fonction onResponse()
+             * Permet de récupérer un json object correspondant aux stations en fonction
+             * du mode de transport et de la ligne si aucune exception est levée
+             * @param call : Appel à l'exception
+             * @param response : Réponse à la requête
+             * @throws IOException  : Exception
+             */
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()) {
@@ -200,18 +245,39 @@ public class APIServices {
         }
 
     }
-
+    /**
+     * Fonction getHorraireFromStation()
+     * Permet de récupérer les horaires d'arrivée du transport
+     * en fonction de la ligne, du mode de transport et de la station
+     * @param line
+     * @param transport
+     * @param station
+     * @return
+     */
     public String getHorraireFromStation(String line,String transport,String station){
 
         OkHttpClient okHttpClient = new OkHttpClient();
         final String[] schedule = {""};
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         Callback callback = new Callback() {
+            /**
+             * Fonction onFailure()
+             * Permet de lever une exception si l'horaire n'est pas récupéré
+             * @param call : Appel à l'exception
+             * @param e : Exception
+             */
             @Override
             public void onFailure(Call call, IOException e) {
                 countDownLatch.countDown();
             }
-
+            /**
+             * Fonction onResponse()
+             * Permet de récupérer un json object correspondant aux horaires en fonction
+             * du mode de transport, de la ligne et de la station si aucune exception est levée
+             * @param call : Appel à l'exception
+             * @param response : Réponse à la requête
+             * @throws IOException : Exception
+             */
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()) {
@@ -254,6 +320,13 @@ public class APIServices {
         }
     }
 
+    /**
+     * Fonction removeDuplicates()
+     * Permet de retirer les élements dupliqués des listes de stations et lignes
+     * pour renvoyer une liste correcte sans doublons
+     * @param list : Liste de stations ou de lignes
+     * @return
+     */
     public ArrayList<String> removeDuplicates(ArrayList<String> list)
     {
         ArrayList<String> newList = new ArrayList<String>();

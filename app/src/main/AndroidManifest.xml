@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.squareroute">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -18,7 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/splashScreenTheme">
-
+        <activity
+            android:name=".Activity1.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/splashScreenTheme.NoActionBar"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -30,23 +32,26 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".MapsActivityBibliotheque"
-            android:label="@string/title_activity_maps_bibliotheque"></activity>
+            android:name=".Activity3.MapsActivityBibliotheque"
+            android:label="@string/title_activity_maps_bibliotheque" />
         <activity
-            android:name=".MapsActivityUniversity"
+            android:name=".Activity2.MapsActivityUniversity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".SquareInRealtime" />
-        <activity android:name=".ForgotPassword" />
+        <activity android:name=".Activity4.SquareInRealtime" />
+        <activity android:name=".BasicActivity.ForgotPassword" />
         <activity
-            android:name=".Dashboard"
+            android:name=".BasicActivity.Dashboard"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Register"
+            android:name=".BasicActivity.Register"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".BasicActivity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,13 +60,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LinesActivity"
+            android:name=".Activity4.LinesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".StationsActivity"
+            android:name=".Activity4.StationsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HorairesActivity"
+            android:name=".Activity4.HorairesActivity"
             android:screenOrientation="portrait" />
     </application>
 
