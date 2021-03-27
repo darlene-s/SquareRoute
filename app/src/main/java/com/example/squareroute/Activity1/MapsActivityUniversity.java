@@ -232,7 +232,7 @@ public class MapsActivityUniversity extends FragmentActivity implements OnMapRea
                     Universite universite = dataSnapshot.getValue(Universite.class);
                     LatLng coordonnees = new LatLng(universite.lat,universite.lng);
                     BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.logo_univ);
-                    mMap.addMarker(new MarkerOptions().position(coordonnees).title(universite.nom_univ).icon(icon));
+                    mMap.addMarker(new MarkerOptions().position(coordonnees).title(universite.nom_univ).snippet(universite.adresse_univ).icon(icon));
                 }
             }
 

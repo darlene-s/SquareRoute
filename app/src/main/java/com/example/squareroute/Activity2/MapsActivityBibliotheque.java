@@ -232,7 +232,7 @@ public class MapsActivityBibliotheque extends FragmentActivity implements OnMapR
                     Bibliotheque bibliotheque = dataSnapshot.getValue(Bibliotheque.class);
                     LatLng coordonnees = new LatLng(bibliotheque.lat,bibliotheque.lng);
                     BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.logo_bibli);
-                    mMap.addMarker(new MarkerOptions().position(coordonnees).title(bibliotheque.nom_bibli).icon(icon));
+                    mMap.addMarker(new MarkerOptions().position(coordonnees).title(bibliotheque.nom_bibli).snippet(bibliotheque.adresse_bibli).icon(icon));
                 }
             }
 
