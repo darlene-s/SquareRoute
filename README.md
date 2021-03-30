@@ -3,8 +3,8 @@
 ### Par Gamo Christian | Souccouchetty Darlène | Tendon Kenny
 
 ### Principe de l'application
-Le principe de SquareRoute et d'aider les étudiants de région parisienne à trouver les bibliothèques universitaires, universités qui se trouvent à leur proximité, 
-ainsi que d'avoir un accès direct au réseau RATP le tout sur la même application.
+Le principe de SquareRoute est d'aider les étudiants de région parisienne à trouver les bibliothèques universitaires, universités qui se trouvent à leur proximité, 
+ainsi que d'avoir un accès direct au réseau RATP, le tout sur la même application.
 
 ### Pourquoi avoir choisi de réaliser SquareRoute ?
 Tout simplement car nous nous sommes rendus comptes que très peu d'étudiants, en particulier de 1ère année ont connaissance des différents campus universitaires, et
