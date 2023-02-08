@@ -17,7 +17,7 @@ compte de leur localisation, ou d'un point de départ qu'ils auront indiqué au 
 Projet réalisé par Gamo Christian | Souccouchetty Darlène | Tendon Kenny
 IUT Paris Descartes Promo 2A 2020/2021
 
-### III- Outils utilisés
+## III- Outils utilisés
 Front-end (UX-UI, View) : Adobe XD | Layouts en XML
 Back-end : Java
  
